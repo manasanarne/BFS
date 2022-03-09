@@ -1,68 +1,82 @@
 # BFS
 #include<stdio.h>
-int a[20][20], q[20], visited[20], n, i, j, f = 0, r = -1;
-
-void bfs(int v) {
- for(i = 1; i <= n; i++)
- if(a[v][i] && !visited[i])
- q[++r] = i;
- if(f <= r) {
- visited[q[f]] = 1;
- bfs(q[f++]);
- }
+#define max 20
+int q[20],f=-1,r=-1;
+int visited[max],a[10][10],n;
+void enque(int x)
+{
+    if(f==-1)
+    {
+        f=r=0;
+    }
+    else
+    {
+        ++r;
+    }
+    q[r]=x;
 }
-
-void main() {
- int v;
- printf("\n Enter the number of vertices:");
- scanf("%d", &n);
- 
- for(i=1; i <= n; i++) {
- q[i] = 0;
- visited[i] = 0;
- }
- 
- printf("\n Enter graph data in matrix form:\n");
- for(i=1; i<=n; i++) {
- for(j=1;j<=n;j++) {
- scanf("%d", &a[i][j]);
- }
- }
- 
- printf("\n Enter the starting vertex:");
- scanf("%d", &v);
- bfs(v);
- printf("\n The node which are reachable are:\n");
- 
- for(i=1; i <= n; i++) {
- if(visited[i])
- printf("%d\t", i);
- else {
- printf("\n Bfs is not possible. Not all nodes are reachable");
- break;
- }
- }
+int deque()
+{
+    if(f==-1)
+    {
+        return -1;
+    }
+    else
+    {
+        int x=q[f];
+        if(f==r)
+        {
+            f=r=-1;
+        }
+        else
+        {
+            ++f;
+        }
+        return x;
+    }
 }
-
-OUTPUT 1:
-Enter the number of vertices:4
-Enter graph data in matrix form:
-1 1 1 1
-0 1 0 0
-0 0 1 0
-0 0 0 1
-Enter the starting vertex:1
-The node which are reachable are:
-1	2	3	4	
-
-OUTPUT 2:
-Enter the number of vertices:4
-Enter graph data in matrix form:
-1 1 1 1
-0 0 0 0
-0 0 1 0
-0 0 0 1
-Enter the starting vertex:2
-The node which are reachable are:
-
- Bfs is not possible. Not all nodes are reachable
+void bfs(int v)
+{
+    int i;
+    int u=v;
+    visited[u]=1;
+    printf("%d ",v);
+    while(1)
+    {
+        for(int i=1;i<=n;i++)
+        {
+            if(a[u][i]==1&& visited[i]==0)
+            {
+                enque(i);
+                visited[i]=1;
+                printf("%d ",i);
+            }
+        }
+        if(f==-1)
+        return;
+        else
+        u=deque();
+    }
+}
+int main()
+{
+    int v;
+    printf("enter the size of the augmented matrix: ");
+    scanf("%d",&n);
+    printf("\n enter the elements in the matrix: \n");
+    for (int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            scanf("%d",&a[i][j]);
+        }
+    }
+    printf("enter the v value\n");
+    scanf("%d",&v);
+    for(int i=0;i<n;i++)
+    {
+        visited[i]=0;
+    }
+    bfs(v);
+    return 0;
+}
